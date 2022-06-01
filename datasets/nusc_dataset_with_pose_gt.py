@@ -56,14 +56,14 @@ class NuscDataset(data.Dataset):
                  width,
                  frame_idxs,
                  num_scales,
-                 version='v1.0-mini',
+                 version='v1.0-trainval',
                  sensor='CAM_FRONT',
                  is_train=False,
                  img_ext='.jpg'):
         super(NuscDataset, self).__init__()
 
         self.data_path = data_root
-        self.data_path = '/share/nuscenes'
+        self.data_path = './datasets/nuscenes'
         self.filenames = filenames
         self.height = height
         self.width = width
@@ -79,7 +79,7 @@ class NuscDataset(data.Dataset):
         self.to_tensor = transforms.ToTensor()
         self.nusc = NuScenes(version=version, dataroot=self.data_path, verbose=True)
         self.sensor = sensor
-        self.data_root = '/share/nuscenes'
+        self.data_root = './datasets/nuscenes'
         self.full_res_shape = (1600, 640)
 
         # We need to specify augmentations differently in newer versions of torchvision.
@@ -259,7 +259,7 @@ class NuscDataset(data.Dataset):
             stereo_T[0, 3] = side_sign * baseline_sign * 0.1
 
             inputs["stereo_T"] = torch.from_numpy(stereo_T)
-
+        
         return inputs
 
     def get_color(self, sample, i, do_flip):
